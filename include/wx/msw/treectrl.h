@@ -43,7 +43,8 @@ struct WXDLLIMPEXP_FWD_CORE wxTreeViewItem;
 #endif
 
 // hash storing attributes for our items
-WX_DECLARE_EXPORTED_VOIDPTR_HASH_MAP(wxTreeItemAttr *, wxMapTreeAttr);
+class wxItemAttr;
+WX_DECLARE_EXPORTED_VOIDPTR_HASH_MAP(wxItemAttr *, wxMapTreeAttr);
 
 // ----------------------------------------------------------------------------
 // wxTreeCtrl

@@ -1029,6 +1029,7 @@ IMPORTANT: please read docs/tech/tn0016.txt before modifying this file!
     wx/xpmdecod.h
     wx/xpmhand.h
     wx/xrc/xmlreshandler.h
+    wx/itemattr.h
 </set>
 
 <!-- ====================================================================== -->

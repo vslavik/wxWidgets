@@ -413,6 +413,9 @@ public:
     void EnableAlternateRowColours(bool enable = true);
     void SetAlternateRowColour(const wxColour& colour);
 
+    // Header attributes support: only implemented in wxMSW currently.
+    virtual bool SetHeaderAttr(const wxItemAttr& WXUNUSED(attr)) { return false; }
+
 protected:
     // Real implementations methods to which our public forwards.
     virtual long DoInsertColumn(long col, const wxListItem& info) = 0;

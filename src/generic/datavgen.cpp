@@ -4607,6 +4607,11 @@ wxBorder wxDataViewCtrl::GetDefaultBorder() const
     return wxBORDER_THEME;
 }
 
+wxHeaderCtrl* wxDataViewCtrl::GenericGetHeader() const
+{
+    return m_headerArea;
+}
+
 #ifdef __WXMSW__
 WXLRESULT wxDataViewCtrl::MSWWindowProc(WXUINT nMsg,
                                         WXWPARAM wParam,

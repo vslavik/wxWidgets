@@ -192,6 +192,8 @@ public:
 
     virtual void EditItem(const wxDataViewItem& item, const wxDataViewColumn *column);
 
+    virtual bool SetHeaderAttr(const wxItemAttr& attr) wxOVERRIDE;
+
     // These methods are specific to generic wxDataViewCtrl implementation and
     // should not be used in portable code.
     wxColour GetAlternateRowColour() const { return m_alternateRowColour; }

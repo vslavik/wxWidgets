@@ -475,6 +475,14 @@ void wxApp::DoCleanUp()
     }
 }
 
+wxLayoutDirection wxApp::GetLayoutDirection() const
+{
+    if ( [[NSApplication sharedApplication] userInterfaceLayoutDirection] == NSUserInterfaceLayoutDirectionRightToLeft )
+        return wxLayout_RightToLeft;
+    else
+        return wxLayout_LeftToRight;
+}
+
 void wxClientDisplayRect(int *x, int *y, int *width, int *height)
 {
     NSRect displayRect = [wxOSXGetMenuScreen() visibleFrame];

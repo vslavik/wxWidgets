@@ -43,6 +43,8 @@ class WXDLLIMPEXP_CORE wxApp: public wxAppBase
     virtual void SetPrintMode(int mode) wxOVERRIDE { m_printMode = mode; }
     virtual int GetPrintMode() const { return m_printMode; }
 
+    virtual wxLayoutDirection GetLayoutDirection() const wxOVERRIDE;
+
     // calling OnInit with an auto-release pool ready ...
     virtual bool CallOnInit() wxOVERRIDE;
 #if wxUSE_GUI

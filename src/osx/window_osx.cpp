@@ -563,6 +563,17 @@ bool wxWindowMac::SetBackgroundColour(const wxColour& col )
     return true ;
 }
 
+void wxWindowMac::SetLayoutDirection(wxLayoutDirection dir)
+{
+    GetPeer()->SetLayoutDirection(dir);
+}
+
+wxLayoutDirection wxWindowMac::GetLayoutDirection() const
+{
+    return GetPeer()->GetLayoutDirection();
+}
+
+
 static bool wxIsWindowOrParentDisabled(wxWindow* w)
 {
     while (w && !w->IsTopLevel())

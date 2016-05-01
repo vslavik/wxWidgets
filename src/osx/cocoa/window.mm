@@ -2688,6 +2688,31 @@ void wxWidgetCocoaImpl::SetControlSize( wxWindowVariant variant )
     }
 }
 
+void wxWidgetCocoaImpl::SetLayoutDirection(wxLayoutDirection dir)
+{
+    switch ( dir )
+    {
+        case wxLayout_LeftToRight:
+            [m_osxView setUserInterfaceLayoutDirection:NSUserInterfaceLayoutDirectionLeftToRight];
+            break;
+        case wxLayout_RightToLeft:
+            [m_osxView setUserInterfaceLayoutDirection:NSUserInterfaceLayoutDirectionRightToLeft];
+            break;
+        case wxLayout_Default:
+            // App-default layout is the default on OS X
+            break;
+    }
+}
+
+wxLayoutDirection wxWidgetCocoaImpl::GetLayoutDirection() const
+{
+    if ( [m_osxView userInterfaceLayoutDirection] == NSUserInterfaceLayoutDirectionRightToLeft )
+        return wxLayout_RightToLeft;
+    else
+        return wxLayout_LeftToRight;
+}
+
+
 void wxWidgetCocoaImpl::SetFont(wxFont const& font, wxColour const&col, long, bool)
 {
     NSView* targetView = m_osxView;

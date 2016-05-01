@@ -260,6 +260,10 @@ public :
         left = top = right = bottom = 0;
     }
 
+    // RTL support
+    virtual void SetLayoutDirection(wxLayoutDirection dir) = 0;
+    virtual wxLayoutDirection GetLayoutDirection() const  = 0;
+
     // native view coordinates are topleft to bottom right (flipped regarding CoreGraphics origin)
     virtual bool        IsFlipped() const { return true; }
 

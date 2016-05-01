@@ -91,6 +91,9 @@ public:
 
     virtual bool SetBackgroundStyle(wxBackgroundStyle style) wxOVERRIDE;
 
+    virtual void SetLayoutDirection(wxLayoutDirection dir) wxOVERRIDE;
+    virtual wxLayoutDirection GetLayoutDirection() const wxOVERRIDE;
+
     virtual int GetCharHeight() const wxOVERRIDE;
     virtual int GetCharWidth() const wxOVERRIDE;
     

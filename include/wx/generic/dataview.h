@@ -192,7 +192,7 @@ public:
 
     virtual void EditItem(const wxDataViewItem& item, const wxDataViewColumn *column);
 
-    virtual bool SetHeaderAttr(const wxItemAttr& attr) wxOVERRIDE;
+    virtual bool SetHeaderAttr(const wxItemAttr& attr);
 
     // These methods are specific to generic wxDataViewCtrl implementation and
     // should not be used in portable code.

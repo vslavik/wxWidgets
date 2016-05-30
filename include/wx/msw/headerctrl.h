@@ -48,9 +48,9 @@ public:
     virtual ~wxHeaderCtrl();
 
     // Override to implement colours support via custom drawing.
-    virtual bool SetBackgroundColour(const wxColour& colour) wxOVERRIDE;
-    virtual bool SetForegroundColour(const wxColour& colour) wxOVERRIDE;
-    virtual bool SetFont(const wxFont& font) wxOVERRIDE;
+    virtual bool SetBackgroundColour(const wxColour& colour);
+    virtual bool SetForegroundColour(const wxColour& colour);
+    virtual bool SetFont(const wxFont& font);
 
 protected:
     // override wxWindow methods which must be implemented by a new control

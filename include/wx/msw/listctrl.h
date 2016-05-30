@@ -117,7 +117,7 @@ public:
     bool SetBackgroundColour(const wxColour& col);
 
     // Header attributes
-    virtual bool SetHeaderAttr(const wxItemAttr& attr) wxOVERRIDE;
+    virtual bool SetHeaderAttr(const wxItemAttr& attr);
 
     // Gets information about this column
     bool GetColumn(int col, wxListItem& item) const;

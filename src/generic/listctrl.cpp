@@ -166,7 +166,7 @@ void wxListItemData::SetItem( const wxListItem &info )
         if ( m_attr )
             m_attr->AssignFrom(*info.GetAttributes());
         else
-            m_attr = new wxListItemAttr(*info.GetAttributes());
+            m_attr = new wxItemAttr(*info.GetAttributes());
     }
 
     if ( m_rect )
@@ -651,7 +651,7 @@ int wxListLineData::GetImage( int index ) const
     return item->GetImage();
 }
 
-wxListItemAttr *wxListLineData::GetAttr() const
+wxItemAttr *wxListLineData::GetAttr() const
 {
     wxListItemDataList::compatibility_iterator node = m_items.GetFirst();
     wxCHECK_MSG( node, NULL, wxT("invalid column index in GetAttr()") );
@@ -660,7 +660,7 @@ wxListItemAttr *wxListLineData::GetAttr() const
     return item->GetAttr();
 }
 
-void wxListLineData::SetAttr(wxListItemAttr *attr)
+void wxListLineData::SetAttr(wxItemAttr *attr)
 {
     wxListItemDataList::compatibility_iterator node = m_items.GetFirst();
     wxCHECK_RET( node, wxT("invalid column index in SetAttr()") );
@@ -674,7 +674,7 @@ void wxListLineData::ApplyAttributes(wxDC *dc,
                                      bool highlighted,
                                      bool current)
 {
-    const wxListItemAttr * const attr = GetAttr();
+    const wxItemAttr * const attr = GetAttr();
 
     wxWindow * const listctrl = m_owner->GetParent();
 

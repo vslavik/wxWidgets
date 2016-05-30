@@ -16,6 +16,7 @@
 #include "wx/vector.h"
 
 class wxMSWListItemData;
+class wxMSWListHeaderCustomDraw;
 
 // define this symbol to indicate the availability of SetColumnsOrder() and
 // related functions
@@ -114,6 +115,9 @@ public:
     // Set the control colours
     bool SetForegroundColour(const wxColour& col);
     bool SetBackgroundColour(const wxColour& col);
+
+    // Header attributes
+    virtual bool SetHeaderAttr(const wxItemAttr& attr);
 
     // Gets information about this column
     bool GetColumn(int col, wxListItem& item) const;
@@ -402,7 +406,7 @@ protected:
 
     // get the item attribute, either by quering it for virtual control, or by
     // returning the one previously set using setter methods for a normal one
-    wxListItemAttr *DoGetItemColumnAttr(long item, long column) const;
+    wxItemAttr *DoGetItemColumnAttr(long item, long column) const;
 
 
     wxTextCtrl*       m_textCtrl;        // The control used for editing a label
@@ -439,7 +443,7 @@ protected:
     virtual int OnGetItemColumnImage(long item, long column) const;
 
     // return the attribute for the given item and column (may return NULL if none)
-    virtual wxListItemAttr *OnGetItemColumnAttr(long item, long WXUNUSED(column)) const
+    virtual wxItemAttr *OnGetItemColumnAttr(long item, long WXUNUSED(column)) const
     {
         return OnGetItemAttr(item);
     }
@@ -462,6 +466,9 @@ private:
     // in-place editor control.
     void OnCharHook(wxKeyEvent& event);
 
+
+    // Object using for header custom drawing if necessary, may be NULL.
+    wxMSWListHeaderCustomDraw* m_headerCustomDraw;
 
     DECLARE_DYNAMIC_CLASS(wxListCtrl)
     DECLARE_EVENT_TABLE()

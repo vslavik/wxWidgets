@@ -4306,6 +4306,7 @@ COND_USE_GUI_1_ALL_GUI_HEADERS =  \
 	wx/xpmdecod.h \
 	wx/xpmhand.h \
 	wx/xrc/xmlreshandler.h \
+	wx/itemattr.h \
 	$(LOWLEVEL_HDR) \
 	$(GUI_CORE_HEADERS) \
 	$(ADVANCED_HDR) \

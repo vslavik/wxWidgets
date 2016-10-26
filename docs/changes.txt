@@ -127,6 +127,12 @@ Changes in behaviour not resulting in compilation errors, please read this!
   to check if the changes correspond to your expectations. And if you do need
   the old behaviour please contact us at wx-dev to let us know about it!
 
+- Revert to using equally-sized buttons in wxToolBar by default: restore the
+  behaviour of the pre-3.0 versions in which toolbar buttons had the same
+  width for the toolbars not using wxTB_HORZ_LAYOUT style. Toolbars with this
+  style still size their buttons appropriately for their contents as they
+  already did in the previous 3.0.x releases.
+
 - wxWindow::Freeze/Thaw() are not virtual any more, if you overrode them in
   your code you need to override DoFreeze/DoThaw() instead now.
 
@@ -581,12 +587,14 @@ All:
 
 - Fix wxFileName::MakeRelativeTo() for directory relatively to itself.
 - Fix wxLocale::IsOk() return true even if setting the locale failed.
+- Fix wxFTP::Pwd() to actually work.
 - Null-terminate wxApp::argv for compatibility with the real argv.
 
 Unix:
 
 - Fix wxIPaddress::Hostname() failing if /etc/hosts contained very long names.
 - Fix wxDateTime::ParseRfc822Date() for some TZ/DST combinations.
+- Fix bug in wxExecute() if child exited too quickly (Kevin B. McCarty).
 
 All (GUI):
 
@@ -606,11 +614,13 @@ All (GUI):
 - Accept wxALIGN_CENTRE_HORIZONTAL in wxStaticText XRC handler (David Hart).
 - Fix appearance after updating a wxGrid with hidden rows/columns (iwbnwif).
 - Make wxAuiNotebookXmlHandler actually work.
+- Fix key handling in wxStyledTextCtrl in non-Unicode build (David Costanzo).
 
 wxGTK:
 
 - Fix infinite sizing loop with GTK3 when using wxScrolled with a non-default
   target window.
+- Fix wxBitmap ctor from XBM for non-square bitmaps.
 - Fix crashes in wxGTK3 when running with non-X11 backend (Marco Trevisan).
 - Fix coordinates of wxSetCursorEvent propagated to parent windows.
 - Fix GTK+ warnings when refreshing wxListCtrl items (Scott Talbert).
@@ -620,6 +630,7 @@ wxGTK:
 wxMSW:
 
 - Fix compilation with g++ 4.9 in non-C++11 mode.
+- Fix rendering of owner drawn multi-column menus (Pete Bannister).
 - Fix regression in accessibility support (Leland Lucius).
 - Fix regression in wxDC drawing with bottom-to-top y axis (Artur Wieczorek).
 - Fix compilation with C++Builder XE compiler (Nichka).
@@ -662,6 +673,7 @@ wxOSX:
 - Fix custom paper support (tijsv).
 - Return false from wxSound::Create()/IsOk() if the file doesn't exist.
 - Fix scrolling behaviour of wxSearchCtrl (John Roberts).
+- Add wxTE_{RIGHT,CENTER} support for multiline wxTextCtrl (Andreas Falkenhahn).
 
 
 3.0.2: (released 2014-10-06)
@@ -713,6 +725,7 @@ wxMSW:
 - Fix using Esc as accelerator in the menus.
 - Fix wrong initial status bar height in some cases (Artur Wieczorek).
 - Correct wxGetOsDescription() for Windows 10 (Tobias Taschner).
+- Fix appearance of checked disabled wxToolBar tools with custom images.
 
 
 3.0.1: (released 2014-06-15)

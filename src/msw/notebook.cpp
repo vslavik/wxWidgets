@@ -795,6 +795,10 @@ void wxNotebook::OnPaint(wxPaintEvent& WXUNUSED(event))
     wxBitmap bmp(rc.right, rc.bottom);
     wxMemoryDC memdc(bmp);
 
+    // set memdc layout direction:
+    auto dir = dc.GetLayoutDirection();
+    memdc.SetLayoutDirection(dir);
+
     const HDC hdc = GetHdcOf(memdc);
 
     // The drawing logic of the native tab control is absolutely impenetrable

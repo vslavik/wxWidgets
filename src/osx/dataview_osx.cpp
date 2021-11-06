@@ -74,7 +74,7 @@ public:
   virtual void Resort() wxOVERRIDE;
 
  // adjust wxCOL_WIDTH_AUTOSIZE columns to fit the data
-  void AdjustAutosizedColumns(bool fitRowHeight = false);
+  void AdjustAutosizedColumns();
 
 protected:
  // if the dataview control can have a variable row height this method sets the dataview's control row height of
@@ -233,65 +233,79 @@ void wxOSXDataViewModelNotifier::Resort()
 
 void wxOSXDataViewModelNotifier::AdjustRowHeight(wxDataViewItem const& item)
 {
-  if (!m_DataViewCtrlPtr->IsFrozen() ||  ((m_DataViewCtrlPtr->GetWindowStyle() & wxDV_VARIABLE_LINE_HEIGHT) != 0))
+  if ((m_DataViewCtrlPtr->GetWindowStyle() & wxDV_VARIABLE_LINE_HEIGHT) != 0)
   {
-    wxDataViewModel *model = GetOwner();
+      wxDataViewModel *model = GetOwner();
 
-    int height = ((m_DataViewCtrlPtr->GetWindowStyle() & wxDV_VARIABLE_LINE_HEIGHT) != 0)
-        ? 20
-        : m_DataViewCtrlPtr->GetDataViewPeer()->GetRowHeight();
-    int origHeight = height;
-    unsigned int num = m_DataViewCtrlPtr->GetColumnCount();
-    unsigned int col;
-    for (col = 0; col < num; col++)
-    {
-      wxDataViewColumn* column(m_DataViewCtrlPtr->GetColumnPtr(col));
-
-      if (!(column->IsHidden()))
+      int height = 20; // TODO find out standard height
+      unsigned int num = m_DataViewCtrlPtr->GetColumnCount();
+      unsigned int col;
+      for (col = 0; col < num; col++)
       {
-        wxDataViewCustomRenderer *renderer = dynamic_cast<wxDataViewCustomRenderer*>(column->GetRenderer());
-        if (renderer)
-        {
-          wxVariant value;
-          model->GetValue( value, item, column->GetModelColumn() );
-          renderer->SetValue( value );
-          height = wxMax( height, renderer->GetSize().y );
-        }
+          wxDataViewColumn* column(m_DataViewCtrlPtr->GetColumnPtr(col));
+
+          if (!(column->IsHidden()))
+          {
+            wxDataViewCustomRenderer *renderer = dynamic_cast<wxDataViewCustomRenderer*>(column->GetRenderer());
+            if (renderer)
+            {
+                wxVariant value;
+                model->GetValue( value, item, column->GetModelColumn() );
+                renderer->SetValue( value );
+                height = wxMax( height, renderer->GetSize().y );
+            }
+          }
       }
-    }
-    if ((m_DataViewCtrlPtr->GetWindowStyle() & wxDV_VARIABLE_LINE_HEIGHT) != 0)
-    {
       if (height > 20)
         m_DataViewCtrlPtr->GetDataViewPeer()->SetRowHeight(item,height);
-    }
-    else if (origHeight != height)
-    {
-      m_DataViewCtrlPtr->GetDataViewPeer()->SetRowHeight(height);
-    }
   }
 }
 
 void wxOSXDataViewModelNotifier::AdjustRowHeights(wxDataViewItemArray const& items)
 {
-  if (!m_DataViewCtrlPtr->IsFrozen() || ((m_DataViewCtrlPtr->GetWindowStyle() & wxDV_VARIABLE_LINE_HEIGHT) != 0))
+  if ((m_DataViewCtrlPtr->GetWindowStyle() & wxDV_VARIABLE_LINE_HEIGHT) != 0)
   {
-    size_t const noOfItems = items.GetCount();
-    for (size_t itemIndex=0; itemIndex<noOfItems; ++itemIndex)
-    {
-      AdjustRowHeight(items[itemIndex]);
-    }
+      size_t const noOfItems = items.GetCount();
+
+      wxDataViewModel *model = GetOwner();
+
+      for (size_t itemIndex=0; itemIndex<noOfItems; ++itemIndex)
+      {
+        int height = 20; // TODO find out standard height
+        unsigned int num = m_DataViewCtrlPtr->GetColumnCount();
+        unsigned int col;
+
+        for (col = 0; col < num; col++)
+        {
+            wxDataViewColumn* column(m_DataViewCtrlPtr->GetColumnPtr(col));
+
+            if (!(column->IsHidden()))
+            {
+              wxDataViewCustomRenderer *renderer = dynamic_cast<wxDataViewCustomRenderer*>(column->GetRenderer());
+              if (renderer)
+              {
+                  wxVariant value;
+                  model->GetValue( value, items[itemIndex], column->GetModelColumn() );
+                  renderer->SetValue( value );
+                  height = wxMax( height, renderer->GetSize().y );
+              }
+            }
+        }
+        if (height > 20)
+          m_DataViewCtrlPtr->GetDataViewPeer()->SetRowHeight(items[itemIndex],height);
+      }
   }
 }
 
-void wxOSXDataViewModelNotifier::AdjustAutosizedColumns(bool fitRowHeight)
+void wxOSXDataViewModelNotifier::AdjustAutosizedColumns()
 {
-  if (!m_DataViewCtrlPtr->IsFrozen())
+  unsigned count = m_DataViewCtrlPtr->GetColumnCount();
+  for ( unsigned col = 0; col < count; col++ )
   {
-    unsigned count = m_DataViewCtrlPtr->GetColumnCount();
-    for ( unsigned col = 0; col < count; col++ )
-    {
-      m_DataViewCtrlPtr->GetDataViewPeer()->FitColumnWidthToContent(col, fitRowHeight);
-    }
+      wxDataViewColumn *column = m_DataViewCtrlPtr->GetColumnPtr(col);
+
+      if ( column->GetWidthVariable() == wxCOL_WIDTH_AUTOSIZE )
+        m_DataViewCtrlPtr->GetDataViewPeer()->FitColumnWidthToContent(col);
   }
 }
 
@@ -427,9 +441,6 @@ bool wxDataViewCtrl::InsertColumn(unsigned int pos, wxDataViewColumn* columnPtr)
      // otherwise ask the control to 'update' the data in the newly appended column:
       if (GetColumnCount() == 1)
         SetExpanderColumn(columnPtr);
-
-      AdjustAutosizedColumns();
-
      // done:
       return true;
     }
@@ -471,8 +482,6 @@ bool wxDataViewCtrl::DeleteColumn(wxDataViewColumn* columnPtr)
   {
     m_ColumnPtrs.Remove(columnPtr);
     delete columnPtr;
-
-    AdjustAutosizedColumns();
     return true;
   }
   else
@@ -692,16 +701,6 @@ void wxDataViewCtrl::AdjustAutosizedColumns() const
 {
   if ( m_ModelNotifier )
     m_ModelNotifier->AdjustAutosizedColumns();
-}
-
-void wxDataViewCtrl::DoThaw()
-{
-  if ( m_ModelNotifier )
-  {
-    // also adjust the standard row heights since we have to calculate the widths anyway
-    m_ModelNotifier->AdjustAutosizedColumns(true);
-  }
-  wxDataViewCtrlBase::DoThaw();
 }
 
 /*static*/

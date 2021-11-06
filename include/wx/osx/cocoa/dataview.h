@@ -86,7 +86,7 @@ class wxCocoaDataViewControl;
 class wxDataViewColumnNativeData
 {
 public:
-    wxDataViewColumnNativeData() : m_NativeColumnPtr(NULL), m_isLast(false), m_prevWidth(0)
+    wxDataViewColumnNativeData() : m_NativeColumnPtr(NULL)
     {
     }
 
@@ -105,32 +105,9 @@ public:
         m_NativeColumnPtr = newNativeColumnPtr;
     }
 
-    bool GetIsLast() const
-    {
-        return m_isLast;
-    }
-
-    void SetIsLast(bool isLast)
-    {
-        m_isLast = isLast;
-    }
-
-    int GetPrevWidth() const
-    {
-        return m_prevWidth;
-    }
-
-    void SetPrevWidth(int prevWidth)
-    {
-        m_prevWidth = prevWidth;
-    }
-
 private:
     // not owned by us
     NSTableColumn* m_NativeColumnPtr;
-
-    bool m_isLast;
-    int m_prevWidth;
 };
 
 // ============================================================================
@@ -501,7 +478,7 @@ public:
     virtual wxDataViewColumn* GetColumn(unsigned int pos) const wxOVERRIDE;
     virtual int GetColumnPosition(wxDataViewColumn const* columnPtr) const wxOVERRIDE;
     virtual bool InsertColumn(unsigned int pos, wxDataViewColumn* columnPtr) wxOVERRIDE;
-    virtual void FitColumnWidthToContent(unsigned int pos, bool fitRowHeight = false) wxOVERRIDE;
+    virtual void FitColumnWidthToContent(unsigned int pos) wxOVERRIDE;
 
     // item related methods (inherited from wxDataViewWidgetImpl)
     virtual bool Add(const wxDataViewItem& parent, const wxDataViewItem& item) wxOVERRIDE;
@@ -570,7 +547,6 @@ public:
 
     // Cocoa-specific helpers
     id GetItemAtRow(int row) const;
-    virtual int GetRowHeight() wxOVERRIDE;
 
     virtual void SetFont(const wxFont& font) wxOVERRIDE;
 

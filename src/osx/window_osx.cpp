@@ -263,6 +263,13 @@ wxWindowMac::~wxWindowMac()
     delete GetPeer() ;
 }
 
+void wxWindowMac::MacClipsToBounds( bool clip )
+{
+    if ( m_peer )
+        m_peer->ClipsToBounds(clip);
+}
+
+
 void wxWindowMac::MacSetClipChildren( bool clip )
 {
     m_clipChildren = clip ;
@@ -2759,6 +2766,10 @@ bool wxWidgetImpl::NeedsFrame() const
 }
 
 void wxWidgetImpl::SetDrawingEnabled(bool WXUNUSED(enabled))
+{
+}
+
+void wxWidgetImpl::ClipsToBounds(bool WXUNUSED(clip))
 {
 }
 
